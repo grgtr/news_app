@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hackernews_api/hackernews_api.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
-
+import 'package:url_launcher/url_launcher_string.dart';
 
 void main() {
   runApp(const App());
@@ -151,7 +150,7 @@ class NewsScreen extends StatelessWidget {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: AspectRatio(
-                    aspectRatio: 3 / 1, // Ширина к высоте 3:1
+                    aspectRatio: 3 / 1,
                     child: Image.network(
                       snapshot.data!,
                       fit: BoxFit.cover,
@@ -193,8 +192,8 @@ class NewsScreen extends StatelessWidget {
 }
 
 Future<void> launchURL(String url) async {
-  if (await canLaunchUrl(url as Uri)) {
-    await launchUrl(url as Uri);
+  if (await canLaunchUrlString(url)) {
+    await launchUrlString(url);
   } else {
     throw 'Could not launch $url';
   }
