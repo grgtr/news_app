@@ -33,6 +33,7 @@ dependencies:
   http: ^0.13.3
   shared_preferences: ^2.0.6
   hackernews_api: ^0.0.6
+  url_launcher: ^6.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
