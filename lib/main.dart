@@ -18,12 +18,10 @@ class App extends StatefulWidget {
 
 class _ThemedAppState extends State<App> {
   late bool _isDarkTheme = false;
-  late HackerNews _news;
 
   @override
   void initState() {
     super.initState();
-    _news = HackerNews(newsType: NewsType.newStories);
   }
 
   @override
@@ -33,49 +31,25 @@ class _ThemedAppState extends State<App> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildThemeSwitcher(context),
-            const SizedBox(height: 16),
-            Expanded(
-              child: FutureBuilder<List<Story>>(
-                future: _news.getStories(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-                  if (!snapshot.hasData) {
-                    return const Text('No Data');
-                  }
-
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final story = snapshot.data![index];
-                      return ListTile(
-                        title: Text(story.title),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NewsScreen(
-                                story: story,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          bottomNavigationBar: _buildThemeSwitcher(context),
+          appBar: AppBar(
+            title: const Text('News App'),
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'New Stories'),
+                Tab(text: 'Top Stories'),
+              ],
             ),
-          ],
+          ),
+          body: const TabBarView(
+            children: [
+              _NewsTab(newsType: NewsType.newStories),
+              _NewsTab(newsType: NewsType.topStories),
+            ],
+          ),
         ),
       ),
     );
@@ -104,6 +78,52 @@ class _ThemedAppState extends State<App> {
           const Icon(Icons.nightlight),
         ],
       ),
+    );
+  }
+}
+
+class _NewsTab extends StatelessWidget {
+  final NewsType newsType;
+
+  const _NewsTab({required this.newsType});
+
+  @override
+  Widget build(BuildContext context) {
+    final HackerNews news = HackerNews(newsType: newsType);
+
+    return FutureBuilder<List<Story>>(
+      future: news.getStories(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        if (!snapshot.hasData) {
+          return const Text('No Data');
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data!.length,
+          itemBuilder: (BuildContext context, int index) {
+            final story = snapshot.data![index];
+            return ListTile(
+              title: Text(story.title),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewsScreen(
+                      story: story,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
