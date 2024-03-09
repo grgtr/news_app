@@ -1,16 +1,17 @@
-# flutter_hw1
+# Новостной Агрегатор
+## _Это простое приложение для просмотра новостей, которое использует Hacker News API. Приложение позволяет пользователям просматривать последние и самые популярные новости, читать их подробности и переходить по ссылкам._
 
-flutter_hw1
+## Функциональность
 
-## Getting Started
+- Отображение списка новостей (новые и самые популярные)
+- Просмотр подробностей новости: заголовок, автор, количество комментариев, количество очков и изображение (если cуществует и доступно)
+- Переход по ссылке на полную статью в браузере
+- Переключение темной/светлой темы приложения
 
-This project is a starting point for a Flutter application.
+## Реализация
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- TabBar для переключения между списками новостей (новые и самые популярные)
+- Использование Hacker News API для получения новостей
+- Открытие ссылок в браузере с помощью пакета url_launcher
+- html - пакет Dart для парсинга HTML.
+- http - пакет Dart для работы с HTTP-запросами.

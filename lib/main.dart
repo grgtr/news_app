@@ -18,6 +18,21 @@ class App extends StatefulWidget {
 
 class _ThemedAppState extends State<App> {
   late bool _isDarkTheme = false;
+  final ThemeData _customLightTheme = ThemeData(
+    primaryColor: Colors.purple,
+    scaffoldBackgroundColor: Colors.white,
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(color: Colors.black),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.purple,
+      foregroundColor: Colors.white,
+    ),
+    tabBarTheme: const TabBarTheme(
+      labelColor: Colors.red,
+      unselectedLabelColor: Colors.orange,
+    ),
+  );
 
   @override
   void initState() {
@@ -28,7 +43,7 @@ class _ThemedAppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'News App',
-      theme: ThemeData.light(),
+      theme: _customLightTheme,
       darkTheme: ThemeData.dark(),
       themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       home: DefaultTabController(
@@ -160,17 +175,14 @@ class NewsScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 }
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
-                if (!snapshot.hasData || snapshot.data == null) {
-                  return const Text('No image found');
+                if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+                  return const SizedBox(height: 0);
                 }
 
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: AspectRatio(
-                    aspectRatio: 3 / 1,
+                  child: FractionallySizedBox(
+                    widthFactor: 0.6,
                     child: Image.network(
                       snapshot.data!,
                       fit: BoxFit.cover,
@@ -179,7 +191,7 @@ class NewsScreen extends StatelessWidget {
                         return const CircularProgressIndicator();
                       },
                       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                        return const Text('Error loading image');
+                        return const SizedBox(height: 0);
                       },
                     ),
                   ),
