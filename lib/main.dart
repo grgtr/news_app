@@ -39,7 +39,7 @@ class _ThemedAppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'News App',
+      title: 'Pocket News',
       theme: _customLightTheme,
       darkTheme: ThemeData.dark(),
       themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
