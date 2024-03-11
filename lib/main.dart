@@ -48,7 +48,7 @@ class _ThemedAppState extends State<App> {
         child: Scaffold(
           bottomNavigationBar: _buildThemeSwitcher(context),
           appBar: AppBar(
-            title: const Text('News App'),
+            title: const Text('Pocket News'),
             bottom: const TabBar(
               tabs: [
                 Tab(text: 'New Stories'),
